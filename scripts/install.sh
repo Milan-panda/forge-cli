@@ -4,7 +4,7 @@ set -e
 
 # Configuration
 BINARY_NAME="forge"
-DOWNLOAD_URL_BASE="https://github.com/Milan-panda/forge-cli/releases/download/v1.0.0/forge"
+DOWNLOAD_URL_BASE="https://github.com/Milan-panda/forge-cli/releases/download/v1.0.0"
 INSTALL_DIR="/usr/local/bin"
 
 # Colors
@@ -24,7 +24,8 @@ esac
 
 echo "Detected OS: ${OS_TYPE}"
 
-# Construct Download URL (Assumes binaries are named forge-linux or forge-mac)
+# Construct Download URL
+# Expects assets named 'forge-linux' and 'forge-mac' in the release
 DOWNLOAD_URL="${DOWNLOAD_URL_BASE}/${BINARY_NAME}-${OS_TYPE}"
 
 # Check for curl
