@@ -4,8 +4,7 @@ set -e
 
 # Configuration
 BINARY_NAME="forge"
-# REPLACE THIS WITH YOUR ACTUAL HOSTED BINARY URL
-DOWNLOAD_URL_BASE="https://github.com/milan/forge/releases/latest/download"
+DOWNLOAD_URL_BASE="https://github.com/Milan-panda/forge-cli/releases/download/v1.0.0/forge"
 INSTALL_DIR="/usr/local/bin"
 
 # Colors
