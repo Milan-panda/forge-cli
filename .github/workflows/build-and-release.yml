@@ -1,0 +1,56 @@
+name: Build and Release Forge 🚀
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    name: Build Binary
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: forge
+            asset_name: forge-linux
+          - os: macos-latest
+            artifact_name: forge
+            asset_name: forge-mac
+
+    steps:
+      - name: Checkout Code 🛎️
+        uses: actions/checkout@v4
+
+      - name: Set up Python 🐍
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies 📦
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build with PyInstaller 🔨
+        run: |
+          pyinstaller forge.spec
+
+      - name: Prepare Artifact (Linux) 🐧
+        if: runner.os == 'Linux'
+        run: mv dist/${{ matrix.artifact_name }} dist/${{ matrix.asset_name }}
+
+      - name: Prepare Artifact (macOS) 🍎
+        if: runner.os == 'macOS'
+        run: mv dist/${{ matrix.artifact_name }} dist/${{ matrix.asset_name }}
+
+      - name: Upload Release Asset 📤
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: dist/${{ matrix.asset_name }}
+          asset_name: ${{ matrix.asset_name }}
+          asset_content_type: application/octet-stream
